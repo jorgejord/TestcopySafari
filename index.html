@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clipboard Test</title>
+</head>
+<body>
+
+    <h2>ทดสอบการ Copy บน Safari / iPad</h2>
+
+    <p id="textToCopy">Passcopy</p>
+
+    <button id="copyButton">Copy</button>
+
+    <p id="status"></p>
+
+    <script>
+        document.getElementById("copyButton").addEventListener("click", function () {
+            const text = "Passcopy";
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text)
+                    .then(function () {
+                        document.getElementById("status").textContent = "คัดลอกสำเร็จ";
+                    })
+                    .catch(function (err) {
+                        document.getElementById("status").textContent = "เกิดข้อผิดพลาด: " + err;
+                    });
+            } else {
+                // fallback สำหรับ browser เก่า
+                const tempInput = document.createElement("textarea");
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+                document.getElementById("status").textContent = "คัดลอกสำเร็จ (fallback)";
+            }
+        });
+    </script>
+
+</body>
+</html>
